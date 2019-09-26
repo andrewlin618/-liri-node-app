@@ -39,7 +39,7 @@ function concert(name) {
 
 function spotifySong(name) {
     if (!name) {
-        name = 'The Sign'
+        name = 'The Sign Ace of Base'
     }
     spotify
         .search({
@@ -48,20 +48,16 @@ function spotifySong(name) {
         })
         .then(function (response) {
             var artists = [];
-            for (var i = 0; i < response.tracks.items.length; i++) {
-                if (response.tracks.items[i].artists[0] === 'Ace of Base') {
-                    for (var j = 0; j < response.tracks.items[
-                            0].artists.length; j++) {
-                        artists.push(response.tracks.items[0].artists[j].name)
-                    }
-                    console.log("-------------------------------------------------")
-                    console.log("Artist : " + artists);
-                    console.log("The song's name: " + response.tracks.items[i].name);
-                    console.log("Preview link: " + response.tracks.items[i].preview_url);
-                    console.log("Album: " + response.tracks.items[i].album.name);
-                    console.log("-------------------------------------------------")
-                }
+            for (var i = 0; i < response.tracks.items[
+                    0].artists.length; i++) {
+                artists.push(response.tracks.items[0].artists[i].name)
             }
+            console.log("-------------------------------------------------")
+            console.log("Artist : " + artists);
+            console.log("The song's name: " + response.tracks.items[0].name);
+            console.log("Preview link: " + response.tracks.items[0].preview_url);
+            console.log("Album: " + response.tracks.items[0].album.name);
+            console.log("-------------------------------------------------")
         })
         .catch(function (err) {
             console.log(err);
