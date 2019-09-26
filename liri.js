@@ -8,20 +8,23 @@ var spotify = new Spotify(keys.spotify);
 var operator = process.argv[2];
 var name = process.argv.slice(3).join(' ');
 
-switch (operator) {
-    case 'concert-this':
-        concert(name);
-        break;
-    case 'spotify-this-song':
-        spotifySong(name);
-        break;
-    case 'movie-this':
-        movie(name);
-        break;
-    case 'do-what-it-says':
-        dwis(name);
-        break;
+function play(operator, name) {
+    switch (operator) {
+        case 'concert-this':
+            concert(name);
+            break;
+        case 'spotify-this-song':
+            spotifySong(name);
+            break;
+        case 'movie-this':
+            movie(name);
+            break;
+        case 'do-what-it-says':
+            dwis();
+            break;
+    }
 }
+play(operator, name);
 
 function concert(name) {
     var url = "https://rest.bandsintown.com/artists/" + name + "/events?app_id=codingbootcamp";
@@ -86,6 +89,14 @@ function movie(name) {
         });
 }
 
-function dwis(name) {
+function dwis() {
+    fs.readFile('random.txt', function (err, data) {
+        if (err) {
+            throw err;
+        }
+        operator = data.toString().split(',')[0];
+        name = data.toString().split(',')[1];
+        play(operator, name);
+    });
 
 }
