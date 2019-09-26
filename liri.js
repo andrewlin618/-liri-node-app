@@ -5,28 +5,33 @@ var Spotify = require('node-spotify-api')
 var fs = require('fs');
 
 var spotify = new Spotify(keys.spotify);
+
 var operator = process.argv[2];
 var name = process.argv.slice(3).join(' ');
 
-function play(operator, name) {
+function play(operator) {
     switch (operator) {
         case 'concert-this':
-            concert(name);
+            concert();
+            saveOperation();
             break;
         case 'spotify-this-song':
-            spotifySong(name);
+            spotifySong();
+            saveOperation();
             break;
         case 'movie-this':
-            movie(name);
+            movie();
+            saveOperation();
             break;
         case 'do-what-it-says':
             dwis();
+            saveOperation();
             break;
     }
 }
 play(operator, name);
 
-function concert(name) {
+function concert() {
     var url = "https://rest.bandsintown.com/artists/" + name + "/events?app_id=codingbootcamp";
     axios.get(url)
         .then(function (response) {
@@ -38,9 +43,10 @@ function concert(name) {
                 console.log("-------------------------------------------------")
             }
         })
+
 }
 
-function spotifySong(name) {
+function spotifySong() {
     if (!name) {
         name = 'The Sign Ace of Base'
     }
@@ -67,7 +73,7 @@ function spotifySong(name) {
         });
 }
 
-function movie(name) {
+function movie() {
     if (!name) {
         name = 'Mr. Nobody'
     }
@@ -99,4 +105,13 @@ function dwis() {
         play(operator, name);
     });
 
+}
+
+function saveOperation() {
+    fs.appendFile('log.txt', operator + ' : ' + name + '\n', function (err) {
+        if (err) {
+            throw err;
+        }
+        console.log('Saved!');
+    });
 }
